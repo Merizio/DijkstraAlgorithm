@@ -6,6 +6,7 @@ void main(int argc, char* argv[]){
     /*
     PLANEJAMENTO
 
+    Ler um grafo da entrada e encontrar o caminho mais curto de S para qualquer nó
 
     -Ler os dados da entrada
         .Ler o nó que será o "S"
