@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "funcoes.h"
 
-void main(int argc, char* argv[]){
+int main(int argc, char* argv[]){
+
+    lerArquivo(argv[1]);
+
+    
     /*
     PLANEJAMENTO
 
