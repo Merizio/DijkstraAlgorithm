@@ -2,66 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include "funcoes.h"
+#include "vertice.h"
 
 int main(int argc, char* argv[]){
 
-    lerArquivo(argv[1]);
+    No* n = criarNo("node_0");
 
-    
-    /*
-    PLANEJAMENTO
+    adicionarConexao(n,0,5);
+    adicionarConexao(n,1,12);
+    adicionarConexao(n,2,2.2);
+    adicionarConexao(n,3,2);
+    adicionarConexao(n,4,1.34);
+    adicionarConexao(n,5,0);
+    adicionarConexao(n,6,1);
+    adicionarConexao(n,7,1.5);
 
-    Ler um grafo da entrada e encontrar o caminho mais curto de S para qualquer nó
+    imprimirNo(n);
 
-    -Ler os dados da entrada
-        .Ler o nó que será o "S"
-        .Ler todos os Nós, de 0 a N-1
-            >Ler o nome do nó
-            >Ler todas as relações do nó atual com os outros
-        .Colocar em uma matriz de adjacência
-
-    -Transformar em Tad
-        .Criar um TAD para lidar com os Nós
-        .Nome, ID, dist para S, inicializada como Infinito, Pai
-        .Lista de Adj?
-
-    -Criar a Heap
-        .Organizar as distâncias em uma heap de prioridade
-        .Lista de Adj
-        .FixUp/FixDown
-
-    -Fazer Dijkstra
-        .Inicializa em S
-        .Atualiza as arestas tensas
-        .Heap
-        .Uma segunda Lista de vertices "Finalizados"
-
-    -Escrever na Saida
-        .De S para todos os Nós
-        .Aleatoriedade nos caminhos com várias possibilidades
-    
-
-    *PSEUDO CÓDIGO ALGORITMO DE DIJKSTRA:
-
-    Dijkstra(G, w, s)
-        Inicializa(G, s)
-        S ← ∅
-        ConstruaFilaPrioridade(Q, G.V )
-        while Q 6= ∅
-            u ← ExtrairMinimo(Q)
-            S ← S ∪ {u}
-            for cada vértice v adjacentes à u
-                Relaxe(u, v)
-                DecresçaChave(Q, v, d[v])
-        
-    Inicializa(G, s)
-        for cada vértice v ∈ G.V
-            v.pai ← Nil
-            v.d ← ∞
-            s.d ← 0
-
-
-    */
-
+    liberarNo(n);
     return 0;
 }
