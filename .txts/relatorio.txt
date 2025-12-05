@@ -1,0 +1,17 @@
+RELATÓRIO DO TRABALHO PRATICO 1 - Técnicas de Busca e Ordenação
+Francisco Vassoler Merizio e Rodrigo Mattiolli
+
+TÓPICOS DO RELATÓRIO:
+    Passagem pelo processo de como foi a execução do trabalho
+    Considerações
+    Execução com outra estrutura de Dados
+    Análise e Problemas
+    Melhoria
+    Considerações
+
+
+-COISAS PARA FAZER
+    transformar a leitura
+    ler o nó e as suas conexões
+    criar um array de nós (0 a N-1)
+
