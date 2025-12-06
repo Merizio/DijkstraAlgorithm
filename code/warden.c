@@ -43,7 +43,8 @@ void adicionarElemento(Warden* w, int id, float peso){
 void imprimeWarden(Warden* w){
     Cel* aux = w->prim;
     while(aux!=NULL){
-        printf("Conexão com o nó %d com peso %2f\n", aux->id, aux->peso);
+        printf("nó %d -> %.2f  ", aux->id, aux->peso);
+        //printf(", %.2f", aux->peso);
         aux=aux->prox;
     }
 }
