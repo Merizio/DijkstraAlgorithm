@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "vertice.h"
 
 void lerArquivo(char* nome){
     int d, cont=1;
@@ -18,7 +19,6 @@ void lerArquivo(char* nome){
     //NÓ S
     char node_s[9], bomba[6];
     fscanf(arq,"%[^\n] ", node_s);
-    printf("%s\n", node_s);
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
     char node_aux[9];
@@ -36,49 +36,38 @@ void lerArquivo(char* nome){
     rewind(arq);
 
 
-    //MATRIZ DE ADJACENCIA
-    fscanf(arq,"%[^\n~,] ", node_aux);
-
-    float** adj=malloc(sizeof(float*)*cont);
-    for(int i=0;i<cont;i++){
-        adj[i]=malloc(sizeof(float)*cont);
-    }
-
+    //VETOR DE VERTICES
+    No** array=malloc(sizeof(No*)*cont);
+    int pos_array=0;
+    fscanf(arq,"%[^\n~,] ", node_s);
 
     for(int i=0;i<cont;i++){
-        //COLOCAR ESSE NOME DO NÓ NO TAD NÓ FUTURO
         fscanf(arq,"%[^\n~,] ", node_aux);
-        //printf("\nNÓ:%s->%d ", node_aux, i);          //DEBUG
+        No* aux=criarNo(node_aux);
+
         for(int j=0;j<cont;j++){
-            if(i==j)    adj[i][j]=0;
-            else if(fscanf(arq,", %f", &adj[i][j])!=1){ //CONTROLE DE BOMBAS 
-                adj[i][j]=-1;
-                fscanf(arq,"%[^,~\n]", bomba);
+            if(i==j)    opt=0;
+            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
+            else if(opt>0){
+                adicionarConexao(aux, j, opt);
+                //printf("%.2f -> %d\n", opt, j);                 //DEBUG
             }
-            //printf("%d ", adj[i][j]);                 //DEBUG
+            //printf("%.2f -> %d \n", opt, j);                 //DEBUG
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
+        array[pos_array]=aux;
+        pos_array++; 
     }
 
-
-
-    //IMPRIMIR A MATRIZ DE ADJACENCIA (DEBUG)
+    printf("Nó S: %s\n", node_s);
     for(int i=0;i<cont;i++){
-        printf("node_%d", i);
-        for(int j=0;j<cont;j++){
-            if(adj[i][j]==-1) printf(", bomba");       //SE QUISER DIFERENCIAR AS BOMBAS
-            else if(i!=j) printf(", %.2f", adj[i][j]); //SE QUISER MOSTRAR APENAS AS LIGAÇÕES
-            //printf(", %.2f", adj[i][j]);             //MATRIZ DE ADJACENCIA COMPLETA
-        }
-        printf("\n");
+        imprimirNo(array[i]);
     }
 
-
-    //LIBERAR MATRIZ DE ADJ (ATUALMENTE)
     for(int i=0;i<cont;i++){
-        free(adj[i]);
+        liberarNo(array[i]);
     }
-    free(adj);
-
+    free(array);
+  
     fclose(arq);
 }
