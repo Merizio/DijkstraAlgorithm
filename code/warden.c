@@ -4,6 +4,7 @@
 #include <string.h>
 
 struct cel{
+    void* conex;
     int id;
     float peso;
     Cel* prox;
@@ -24,11 +25,12 @@ Warden* criarConexao(){
     return w;
 }
 
-void adicionarElemento(Warden* w, int id, float peso){
+void adicionarElemento(Warden* w, void* conex, float peso){
     Cel* c = malloc(sizeof(Cel));
-    c->id=id;
+    c->conex=conex;
     c->peso=peso;
     c->prox=NULL;
+    c->id=w->total;
 
     if(w->prim==NULL){
         w->prim=w->ult=c;
@@ -43,8 +45,8 @@ void adicionarElemento(Warden* w, int id, float peso){
 void imprimeWarden(Warden* w){
     Cel* aux = w->prim;
     while(aux!=NULL){
-        printf("nó %d -> %.2f  ", aux->id, aux->peso);
-        //printf(", %.2f", aux->peso);
+        int* pai = (int*) aux->conex;
+        printf("nó %d -> %.2f ", *pai, aux->peso);
         aux=aux->prox;
     }
 }
@@ -73,6 +75,6 @@ float retornaDistancia(Cel* c){
     return c->peso;
 }
 
-int retornaId(Cel* c){
-    return c->id;
+void* retornaConex(Cel* c){
+    return c->conex;
 }

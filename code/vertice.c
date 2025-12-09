@@ -7,27 +7,33 @@
 #include <stdbool.h>
 
 struct no{
+    int id;
     char* nome;
-    int pai; //REFERENCIA AO PAI COM O INDICE OU COM NO*
+    No* pai; //REFERENCIA AO PAI COM O INDICE OU COM NO*
     float dist_s;
     bool finalizado;
     Warden* conex;
 };
 
-No* criarNo(char* nome){
+No* criarNo(int id){
     No* n = malloc(sizeof(No));
-    n->pai=-1;  // n->pai=NULL
+    n->pai=NULL;
     n->dist_s=INFINITY;
-    n->nome=strdup(nome);
+    n->id=id;
+    n->nome=NULL;
     n->conex=criarConexao();
     n->finalizado=false;
 
     return n;
 }
 
+void addNomeNo(No* no, char* nome){
+    no->nome=strdup(nome);
+}
+
 void imprimirNo(No* no){
     //printf("Nó: %s\tDist para S:%.2f\n", no->nome, no->dist_s);
-    printf("%s", no->nome);
+    printf("%s ", no->nome);
     imprimeWarden(no->conex);
     printf("\n");
 }
@@ -38,14 +44,14 @@ void liberarNo(No* no){
     free(no);
 }
 
-void adicionarConexao(No* no, int id, float peso){
-    adicionarElemento(no->conex, id, peso);
+void adicionarConexao(No* no, void* conex, float peso){
+    adicionarElemento(no->conex, conex, peso);
 }
 
 float retornaDistanciaS(No* no){
     return no->dist_s;
 }
 
-int retornaPaiNo(No* no){
+No* retornaPaiNo(No* no){
     return no->pai;
 }
