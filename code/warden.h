@@ -6,7 +6,7 @@ typedef struct warden Warden;
 
 Warden* criarConexao();
 
-void adicionarElemento(Warden* w, int id, float peso);
+void adicionarElemento(Warden* w, void* conex, float peso);
 
 void imprimeWarden(Warden* w);
 
@@ -16,7 +16,7 @@ Cel* retornaCel(Warden* w, int indice);
 
 float retornaDistancia(Cel* c);
 
-int retornaId(Cel* c);
+void* retornaConex(Cel* c);
 
 
 #endif
