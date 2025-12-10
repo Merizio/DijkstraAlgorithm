@@ -8,6 +8,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
+#include "heap.h"
 
 void lerArquivo(char* nome);
 

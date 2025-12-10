@@ -29,23 +29,19 @@ int main(int argc, char* argv[]){
 
 
     //CRIAR A HEAP DE VERTICES
-    No** array=malloc(sizeof(No*)*cont);
-    for(int i=0;i<cont;i++){
-        No* aux=criarNoId(i);
-        array[i]=aux;
-    }
-
+    Heap* heap = criaHeap(cont);
+    
     fscanf(arq,"%[^\n~,] ", node_s);
 
-    for(int i=0;i<cont;i++){
+    for(int i=1;i<=cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
-        addNomeNo(array[i], node_aux);
+        addNomeNo(retornaNoHeap(heap, i), node_aux);
 
-        for(int j=0;j<cont;j++){
+        for(int j=1;j<=cont;j++){
             if(i==j)    opt=0;
             else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
             else if(opt>0){
-                adicionarConexao(array[i], array[j], opt);
+                adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j), opt);
                 //printf("%.2f -> %d\n", opt, j);                 //DEBUG
             }
             //printf("%.2f -> %d \n", opt, j);                 //DEBUG
@@ -53,22 +49,22 @@ int main(int argc, char* argv[]){
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
     }
 
+    atualizaDistancia(retornaNoHeap(heap, 3), 15);
+    atualizaHeap(heap, 3);
+
+
     //IMPRESSÃO PARA DEBUG
     printf("Nó S: %s\n", node_s);
-    for(int i=0;i<cont;i++){
-        imprimirNo(array[i]);
+    for(int i=1;i<=cont;i++){
+        imprimirNo(retornaNoHeap(heap, i));
+        //imprimirNo(array[i]);
     }
 
 
     //FAZER O ALGORITMO DE DIJKSTRA
 
+    liberaHeap(heap);
 
-    //LIBERAR TODAS AS ESTRUTURAS
-    for(int i=0;i<cont;i++){
-        liberarNo(array[i]);
-    }
-    free(array);
-  
     fclose(arq);
 
     return 0;
