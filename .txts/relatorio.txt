@@ -10,8 +10,7 @@ TÓPICOS DO RELATÓRIO:
     Considerações
 
 
--COISAS PARA FAZER
-    transformar a leitura
-    ler o nó e as suas conexões
-    criar um array de nós (0 a N-1)
+-LEITURA FINALIZADA
 
+-COISAS PARA FAZER
+    Algoritmo de dijkstra em si

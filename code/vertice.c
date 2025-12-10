@@ -23,7 +23,6 @@ No* criarNo(int id){
     n->nome=NULL;
     n->conex=criarConexao();
     n->finalizado=false;
-
     return n;
 }
 
@@ -32,8 +31,8 @@ void addNomeNo(No* no, char* nome){
 }
 
 void imprimirNo(No* no){
-    //printf("Nó: %s\tDist para S:%.2f\n", no->nome, no->dist_s);
-    printf("%s ", no->nome);
+    printf("node_%d: %s\tDist para S:%.2f\n", no->id, no->nome, no->dist_s);
+    //printf("%s ", no->nome);
     imprimeWarden(no->conex);
     printf("\n");
 }
@@ -48,8 +47,16 @@ void adicionarConexao(No* no, void* conex, float peso){
     adicionarElemento(no->conex, conex, peso);
 }
 
+void atualizaDistancia(No* no, float dist){
+    no->dist_s=dist;
+}
+
 float retornaDistanciaS(No* no){
     return no->dist_s;
+}
+
+void atualizaId(No* no, int id){
+    no->id=id;
 }
 
 No* retornaPaiNo(No* no){
