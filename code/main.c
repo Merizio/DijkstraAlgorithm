@@ -60,30 +60,11 @@ int main(int argc, char* argv[]){
     printf("Nó S: %s\n", s);
     for(int i=1;i<=cont;i++){
         imprimirNo(retornaNoHeap(heap, i));
+        //imprimirNo(array[i]);
     }
 
-    imprimirNo(node_s);
 
-    printf("%d\n", retornaIdNo(retornaNoHeap(heap, 3)));
-
-    /*
-        Dijkstra(G, w, s)
-        Inicializa(G, s) OK
-        S ← ∅ OK
-        ConstruaFilaPrioridade(Q, G.V )
-        while Q 6= ∅
-            u ← ExtrairMinimo(Q)
-            S ← S ∪ {u}
-            for cada vértice v adjacentes à u
-                Relaxe(u, v)
-                DecresçaChave(Q, v, d[v])
-        
-    Inicializa(G, s)
-        for cada vértice v ∈ G.V
-            v.pai ← Nil
-            v.d ← ∞
-            s.d ← 0
-    */
+    //FAZER O ALGORITMO DE DIJKSTRA
 
     liberaHeap(heap);
 
