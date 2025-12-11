@@ -17,7 +17,7 @@ Heap* criaHeap(int tam){
 
     h->array[0]=NULL;
     for(int i=1;i<h->n;i++){
-        h->array[i]=criarNo(i-1);
+        h->array[i]=criarNo(i);
     }
 
     h->atual=h->n;
@@ -31,8 +31,8 @@ static void fixup(Heap* h, int pos){
         h->array[pos/2]=h->array[pos];
         h->array[pos]=aux;
 
-        atualizaId(h->array[pos/2], (pos/2)-1);
-        atualizaId(h->array[pos], pos-1);
+        atualizaId(h->array[pos/2], (pos/2));
+        atualizaId(h->array[pos], pos);
 
         pos=pos/2;
     }

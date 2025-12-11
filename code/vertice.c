@@ -31,7 +31,7 @@ void addNomeNo(No* no, char* nome){
 }
 
 void imprimirNo(No* no){
-    printf("node_%d: %s\tDist para S:%.2f\n", no->id, no->nome, no->dist_s);
+    printf("%d: %s\tDist para S:%.2f\n", no->id, no->nome, no->dist_s);
     //printf("%s ", no->nome);
     imprimeWarden(no->conex);
     printf("\n");
@@ -53,6 +53,10 @@ void atualizaDistancia(No* no, float dist){
 
 float retornaDistanciaS(No* no){
     return no->dist_s;
+}
+
+int retornaIdNo(No* no){
+    return no->id;
 }
 
 void atualizaId(No* no, int id){
