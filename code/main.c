@@ -68,8 +68,8 @@ int main(int argc, char* argv[]){
 
     /*
         Dijkstra(G, w, s)
-        Inicializa(G, s)
-        S ← ∅
+        Inicializa(G, s) OK
+        S ← ∅ OK
         ConstruaFilaPrioridade(Q, G.V )
         while Q 6= ∅
             u ← ExtrairMinimo(Q)
