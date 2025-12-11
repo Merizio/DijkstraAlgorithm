@@ -3,7 +3,8 @@
 int main(int argc, char* argv[]){
     int d, cont=1;
     float opt;
-    char node_s[15], bomba[6], node_aux[15];
+    char s[15], bomba[6], node_aux[15];
+    No* node_s;
 
     //ABERTURA DE ARQUIVO
     FILE* arq;
@@ -14,7 +15,7 @@ int main(int argc, char* argv[]){
     }
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
-    fscanf(arq,"%[^\n] ", node_s);
+    fscanf(arq,"%[^\n] ", s);
     fscanf(arq,"%[^\n~,] ", node_aux);
     while(1){
         while(fscanf(arq,", %f", &opt)==1){
@@ -31,11 +32,12 @@ int main(int argc, char* argv[]){
     //CRIAR A HEAP DE VERTICES
     Heap* heap = criaHeap(cont);
     
-    fscanf(arq,"%[^\n~,] ", node_s);
+    fscanf(arq,"%[^\n~,] ", s);
 
     for(int i=1;i<=cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
         addNomeNo(retornaNoHeap(heap, i), node_aux);
+        if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i);
 
         for(int j=1;j<=cont;j++){
             if(i==j)    opt=0;
@@ -49,19 +51,39 @@ int main(int argc, char* argv[]){
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
     }
 
-    atualizaDistancia(retornaNoHeap(heap, 3), 15);
-    atualizaHeap(heap, 3);
-
-
-    //IMPRESSÃO PARA DEBUG
-    printf("Nó S: %s\n", node_s);
-    for(int i=1;i<=cont;i++){
-        imprimirNo(retornaNoHeap(heap, i));
-        //imprimirNo(array[i]);
-    }
-
 
     //FAZER O ALGORITMO DE DIJKSTRA
+    atualizaDistancia(retornaNoHeap(heap, 3), 0.0);
+    atualizaHeap(heap, retornaIdNo(retornaNoHeap(heap, 3)));
+
+    //IMPRESSÃO PARA DEBUG
+    printf("Nó S: %s\n", s);
+    for(int i=1;i<=cont;i++){
+        imprimirNo(retornaNoHeap(heap, i));
+    }
+
+    imprimirNo(node_s);
+
+    printf("%d\n", retornaIdNo(retornaNoHeap(heap, 3)));
+
+    /*
+        Dijkstra(G, w, s)
+        Inicializa(G, s)
+        S ← ∅
+        ConstruaFilaPrioridade(Q, G.V )
+        while Q 6= ∅
+            u ← ExtrairMinimo(Q)
+            S ← S ∪ {u}
+            for cada vértice v adjacentes à u
+                Relaxe(u, v)
+                DecresçaChave(Q, v, d[v])
+        
+    Inicializa(G, s)
+        for cada vértice v ∈ G.V
+            v.pai ← Nil
+            v.d ← ∞
+            s.d ← 0
+    */
 
     liberaHeap(heap);
 

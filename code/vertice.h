@@ -17,6 +17,8 @@ void atualizaDistancia(No* no, float dist);
 
 float retornaDistanciaS(No* no);
 
+int retornaIdNo(No* no);
+
 void atualizaId(No* no, int id);
 
 No* retornaPaiNo(No* no); //NO* ...
