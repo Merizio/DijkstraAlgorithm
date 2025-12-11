@@ -62,6 +62,20 @@ int main(int argc, char* argv[]){
 
 
     //FAZER O ALGORITMO DE DIJKSTRA
+    /*
+    -Transformar o char node_S em um nó propriamente dito node_s
+
+    Dijkstra(G, w, s)
+        Inicializa(G, s)
+        S ← ∅
+        ConstruaFilaPrioridade(Q, G.V )
+        while Q 6= ∅
+            u ← ExtrairMinimo(Q)
+            S ← S ∪ {u}
+            for cada vértice v adjacentes à u
+                Relaxe(u, v)
+                DecresçaChave(Q, v, d[v])
+    */
 
     liberaHeap(heap);
 
