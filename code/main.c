@@ -53,18 +53,33 @@ int main(int argc, char* argv[]){
 
 
     //FAZER O ALGORITMO DE DIJKSTRA
-    atualizaDistancia(retornaNoHeap(heap, 3), 0.0);
-    atualizaHeap(heap, retornaIdNo(retornaNoHeap(heap, 3)));
+    //DISTANCIA DO NODE_S SETADA EM 0
+    atualizaHeap(heap, node_s, 0.0);
 
-    //IMPRESSÃO PARA DEBUG
+    /*
+    while (tamanho heap > 0)
+        No v_atual = extrair o minimo heap
+        for(cada vertice do warden)
+            if(Relaxe(u, v))
+                AtualizaHeap
+
+
+    bool RELAXE(v_atual, v_aux)
+        if(d[v_atual]+d[de v_atual para v_aux]  <  d[v_aux]){
+            d[v_aux]=d[v_atual]+d[v_atual->v_aux]
+            v_aux->pai = v_atual
+            return 1;
+        }
+        return 0;
+
+    */
+
+       //IMPRESSÃO PARA DEBUG
     printf("Nó S: %s\n", s);
     for(int i=1;i<=cont;i++){
         imprimirNo(retornaNoHeap(heap, i));
         //imprimirNo(array[i]);
     }
-
-
-    //FAZER O ALGORITMO DE DIJKSTRA
 
     liberaHeap(heap);
 

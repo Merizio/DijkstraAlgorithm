@@ -18,6 +18,6 @@ int tamanhoHeap(Heap* h);
 
 void liberaHeap(Heap* h);
 
-void atualizaHeap(Heap* h, int id);
+void atualizaHeap(Heap* h, No* no, float dist);
 
 #endif
