@@ -99,7 +99,8 @@ void liberaHeap(Heap* h){
     free(h);
 }
 
-void atualizaHeap(Heap* h, int id){
-    fixup(h, id);
+void atualizaHeap(Heap* h, No* no, float dist){
+    atualizaDistancia(no, dist);
+    fixup(h, retornaIdNo(no));
     //fixdown(h, id);
 }

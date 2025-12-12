@@ -46,7 +46,7 @@ void imprimeWarden(Warden* w){
     Cel* aux = w->prim;
     while(aux!=NULL){
         int* pai = (int*) aux->conex;
-        printf("nó %d -> %.2f ", *pai, aux->peso);
+        printf("nó %d -> %.2f ", (*pai)-1, aux->peso);
         aux=aux->prox;
     }
 }
