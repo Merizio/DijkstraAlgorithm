@@ -56,29 +56,32 @@ int main(int argc, char* argv[]){
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaHeap(heap, node_s, 0.0);
 
-    /*
-    while (tamanho heap > 0)
-        No v_atual = extrair o minimo heap
-        for(cada vertice do warden)
-            if(Relaxe(u, v))
-                AtualizaHeap
+    while(tamanhoHeap(heap)>0){
+        No* v_atual=removeHeap(heap);
+        imprimirNo(v_atual);
+        Cel* v_aux=retornaCel(retornaWarden(v_atual));
+        while(1){
+            if(v_aux==NULL) break;
+            No* aux = retornaConex(v_aux);
 
+            float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
+            if(peso)
+                atualizaHeap(heap, aux, peso);
 
-    bool RELAXE(v_atual, v_aux)
-        if(d[v_atual]+d[de v_atual para v_aux]  <  d[v_aux]){
-            d[v_aux]=d[v_atual]+d[v_atual->v_aux]
-            v_aux->pai = v_atual
-            return 1;
+            imprimirNo(aux);
+            v_aux=retornaProxCel(v_aux);
         }
-        return 0;
+        printf("\n");
+    }
 
-    */
+    //TEORICAMENTE CORRETO, MAS PRECISA ARRUMAR OS INDICES
 
+    //IMPRESSÃO CORRETA
+    
        //IMPRESSÃO PARA DEBUG
     printf("Nó S: %s\n", s);
-    for(int i=1;i<=cont;i++){
+    for(int i=cont;i>=1;i--){
         imprimirNo(retornaNoHeap(heap, i));
-        //imprimirNo(array[i]);
     }
 
     liberaHeap(heap);

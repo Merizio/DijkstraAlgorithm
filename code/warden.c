@@ -62,13 +62,11 @@ void liberaWarden(Warden* w){
     free(w);
 }
 
-Cel* retornaCel(Warden* w, int indice){
-    Cel* aux=w->prim;
-    for(int i=0;i<indice;i++){
-        aux=aux->prox;
-        if(aux==NULL) return NULL;
-    }
-    return aux;
+Cel* retornaCel(Warden* w){
+    return w->prim;
+}
+Cel* retornaProxCel(Cel* w){
+    return w->prox;
 }
 
 float retornaDistancia(Cel* c){
@@ -76,5 +74,6 @@ float retornaDistancia(Cel* c){
 }
 
 void* retornaConex(Cel* c){
+    if(c==NULL)return NULL;
     return c->conex;
 }

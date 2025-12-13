@@ -12,11 +12,12 @@ void imprimeWarden(Warden* w);
 
 void liberaWarden(Warden* w);
 
-Cel* retornaCel(Warden* w, int indice);
+Cel* retornaCel(Warden* w);
+
+Cel* retornaProxCel(Cel* w);
 
 float retornaDistancia(Cel* c);
 
 void* retornaConex(Cel* c);
-
 
 #endif

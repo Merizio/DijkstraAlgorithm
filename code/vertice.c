@@ -63,6 +63,23 @@ void atualizaId(No* no, int id){
     no->id=id;
 }
 
+static void atualizaPai(No* no, No* pai){
+    no->pai=pai;
+}
+
 No* retornaPaiNo(No* no){
     return no->pai;
+}
+
+float relaxeNo(No* n1, No* n2, float d_1to2){
+    if(retornaDistanciaS(n1)+d_1to2<retornaDistanciaS(n2)){
+        atualizaPai(n2, n1);
+        return retornaDistanciaS(n1)+d_1to2;
+    }
+
+    return 0.0;
+}
+
+Warden* retornaWarden(No* no){
+    return no->conex;
 }

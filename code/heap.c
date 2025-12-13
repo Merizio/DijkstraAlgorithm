@@ -20,7 +20,7 @@ Heap* criaHeap(int tam){
         h->array[i]=criarNo(i);
     }
 
-    h->atual=h->n;
+    h->atual=h->n-1;
 
     return h;
 }
