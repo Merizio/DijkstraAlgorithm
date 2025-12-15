@@ -45,8 +45,7 @@ void adicionarElemento(Warden* w, void* conex, float peso){
 void imprimeWarden(Warden* w){
     Cel* aux = w->prim;
     while(aux!=NULL){
-        int* pai = (int*) aux->conex;
-        printf("nó %d -> %.2f ", (*pai)-1, aux->peso);
+        printf("nó %d -> %.2f ", aux->id, aux->peso);
         aux=aux->prox;
     }
 }

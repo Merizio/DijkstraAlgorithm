@@ -26,6 +26,8 @@ No* retornaPaiNo(No* no); //NO* ...
 
 Warden* retornaWarden(No* no);
 
+char* retornaNomeNo(No* no);
+
 float relaxeNo(No* n1, No* n2, float d_1to2);
 
 
