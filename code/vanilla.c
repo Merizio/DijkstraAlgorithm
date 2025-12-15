@@ -1,6 +1,7 @@
 #include "funcoes.h"
 
 int main(int argc, char* argv[]){
+    srand(time(NULL));
     int d, cont=1;
     float opt;
     char s[15], bomba[6], node_aux[15];
@@ -74,8 +75,9 @@ int main(int argc, char* argv[]){
         //printf("\n");
     }
 
-    //TEORICAMENTE CORRETO, MAS PRECISA ARRUMAR OS INDICES
-
+    //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
+    sort(heap, tamanhoMaxHeap(heap));
+    
     //IMPRESSÃO
     for(int i = cont; i>=1;i--){
         No* no_atual=retornaNoHeap(heap, i);
@@ -90,12 +92,14 @@ int main(int argc, char* argv[]){
         printf("(Distance: %.2f)\n", retornaDistanciaS(no_atual));
     }
 
+
     /*
        //IMPRESSÃO PARA DEBUG
     printf("Nó S: %s\n", s);
     for(int i=cont;i>=1;i--){
         imprimirNo(retornaNoHeap(heap, i));
     }
+
     */
 
     liberaHeap(heap);

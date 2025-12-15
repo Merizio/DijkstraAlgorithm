@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include "heap.h"
+#include <time.h>
 
 void lerArquivo(char* nome);
 
