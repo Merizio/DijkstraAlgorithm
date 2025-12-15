@@ -76,14 +76,21 @@ char* retornaNomeNo(No* no){
 }
 
 float relaxeNo(No* n1, No* n2, float d_1to2){
-    if(retornaDistanciaS(n1)+d_1to2<retornaDistanciaS(n2)){
-        atualizaPai(n2, n1);
-        return retornaDistanciaS(n1)+d_1to2;
+    int n = rand();
+    if(n%2==0){
+        if(retornaDistanciaS(n1)+d_1to2<retornaDistanciaS(n2)){
+            atualizaPai(n2, n1);
+            return retornaDistanciaS(n1)+d_1to2;
+        }
+    }else{
+        if(retornaDistanciaS(n1)+d_1to2<=retornaDistanciaS(n2)){
+            atualizaPai(n2, n1);
+            return retornaDistanciaS(n1)+d_1to2;
+        }
     }
 
     return 0.0;
 }
-
 
 Warden* retornaWarden(No* no){
     return no->conex;

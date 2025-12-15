@@ -16,8 +16,12 @@ bool vaziaHeap(Heap* h);
 
 int tamanhoHeap(Heap* h);
 
+int tamanhoMaxHeap(Heap* h);
+
 void liberaHeap(Heap* h);
 
 void atualizaHeap(Heap* h, No* no, float dist);
+
+void sort(Heap *h, int tam);
 
 #endif

@@ -30,5 +30,7 @@ char* retornaNomeNo(No* no);
 
 float relaxeNo(No* n1, No* n2, float d_1to2);
 
+int comparaNo(const void* n1, const void* n2);
+
 
 #endif

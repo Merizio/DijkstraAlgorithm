@@ -90,6 +90,9 @@ bool vaziaHeap(Heap* h){
 int tamanhoHeap(Heap* h){
     return h->atual;
 }
+int tamanhoMaxHeap(Heap* h){
+    return h->n;
+}
 
 void liberaHeap(Heap* h){
     for(int i=0;i<h->n;i++){
@@ -103,4 +106,17 @@ void atualizaHeap(Heap* h, No* no, float dist){
     atualizaDistancia(no, dist);
     fixup(h, retornaIdNo(no));
     //fixdown(h, id);
+}
+
+void sort(Heap *vet, int tam){
+    for(int i=2;i<tam;i++){
+        int j=i;
+        while (j>=2){
+            if(retornaDistanciaS(vet->array[j]) < retornaDistanciaS(vet->array[j-1])) break;
+            No* n = vet->array[j];
+            vet->array[j]=vet->array[j-1];
+            vet->array[j-1]=n;
+            j--;
+        }       
+    }
 }
