@@ -33,7 +33,7 @@ void addNomeNo(No* no, char* nome){
 void imprimirNo(No* no){
     printf("%d: %s\tDist para S:%.2f\n", no->id, no->nome, no->dist_s);
     //printf("%s ", no->nome);
-    imprimeWarden(no->conex);
+    //imprimeWarden(no->conex);
     printf("\n");
 }
 
@@ -71,6 +71,10 @@ No* retornaPaiNo(No* no){
     return no->pai;
 }
 
+char* retornaNomeNo(No* no){
+    return no->nome;
+}
+
 float relaxeNo(No* n1, No* n2, float d_1to2){
     if(retornaDistanciaS(n1)+d_1to2<retornaDistanciaS(n2)){
         atualizaPai(n2, n1);
@@ -79,6 +83,7 @@ float relaxeNo(No* n1, No* n2, float d_1to2){
 
     return 0.0;
 }
+
 
 Warden* retornaWarden(No* no){
     return no->conex;

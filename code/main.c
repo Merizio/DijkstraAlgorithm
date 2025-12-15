@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
 
     while(tamanhoHeap(heap)>0){
         No* v_atual=removeHeap(heap);
-        imprimirNo(v_atual);
+        //imprimirNo(v_atual);
         Cel* v_aux=retornaCel(retornaWarden(v_atual));
         while(1){
             if(v_aux==NULL) break;
@@ -68,21 +68,35 @@ int main(int argc, char* argv[]){
             if(peso)
                 atualizaHeap(heap, aux, peso);
 
-            imprimirNo(aux);
+            //imprimirNo(aux);
             v_aux=retornaProxCel(v_aux);
         }
-        printf("\n");
+        //printf("\n");
     }
 
     //TEORICAMENTE CORRETO, MAS PRECISA ARRUMAR OS INDICES
 
-    //IMPRESSÃO CORRETA
-    
+    //IMPRESSÃO
+    for(int i = cont; i>=1;i--){
+        No* no_atual=retornaNoHeap(heap, i);
+        printf("SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
+        if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) printf("<- %s ", retornaNomeNo(node_s));
+        No* no_pai=retornaPaiNo(no_atual);
+        while(1){
+            if(no_pai==NULL) break;
+            printf("<- %s ", retornaNomeNo(no_pai));
+            no_pai=retornaPaiNo(no_pai);
+        }
+        printf("(Distance: %.2f)\n", retornaDistanciaS(no_atual));
+    }
+
+    /*
        //IMPRESSÃO PARA DEBUG
     printf("Nó S: %s\n", s);
     for(int i=cont;i>=1;i--){
         imprimirNo(retornaNoHeap(heap, i));
     }
+    */
 
     liberaHeap(heap);
 
