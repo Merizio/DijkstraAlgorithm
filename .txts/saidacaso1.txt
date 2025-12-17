@@ -1,0 +1,5 @@
+SHORTEST PATH TO node_0: node_0 <- node_0 (Distance: 0.00)
+SHORTEST PATH TO node_3: node_3 <- node_0 (Distance: 5.00)
+SHORTEST PATH TO node_2: node_2 <- node_3 <- node_0 (Distance: 8.00)
+SHORTEST PATH TO node_1: node_1 <- node_3 <- node_0 (Distance: 8.00)
+SHORTEST PATH TO node_4: node_4 <- node_2 <- node_3 <- node_0 (Distance: 12.00)

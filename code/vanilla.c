@@ -7,7 +7,7 @@ int main(int argc, char* argv[]){
     char s[15], bomba[6], node_aux[15];
     No* node_s;
 
-    //ABERTURA DE ARQUIVO
+    //ABERTURA DE ARQUIVO DE ENTRADA
     FILE* arq;
     arq=fopen(argv[1], "r");
     if(arq==NULL){
@@ -75,10 +75,34 @@ int main(int argc, char* argv[]){
         //printf("\n");
     }
 
+
     //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
-    sort(heap, tamanhoMaxHeap(heap));
+    //sort(heap, tamanhoMaxHeap(heap)-1);
+
+    //ABERTURA DO ARQUIVO DE SAÍDA
+    FILE* out;
+    out=fopen(argv[2], "w");
+    if(out==NULL){
+        printf("Erro ao abrir o arquivo\n");
+        exit;
+    }
+
     
     //IMPRESSÃO
+    for(int i = cont; i>=1;i--){
+        No* no_atual=retornaNoHeap(heap, i);
+        fprintf(out, "SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
+        if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) fprintf(out, "<- %s ", retornaNomeNo(node_s));
+        No* no_pai=retornaPaiNo(no_atual);
+        while(1){
+            if(no_pai==NULL) break;
+            fprintf(out, "<- %s ", retornaNomeNo(no_pai));
+            no_pai=retornaPaiNo(no_pai);
+        }
+        fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
+    }
+
+    /*//IMPRESSÃO
     for(int i = cont; i>=1;i--){
         No* no_atual=retornaNoHeap(heap, i);
         printf("SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
@@ -90,20 +114,11 @@ int main(int argc, char* argv[]){
             no_pai=retornaPaiNo(no_pai);
         }
         printf("(Distance: %.2f)\n", retornaDistanciaS(no_atual));
-    }
+    }*/
 
-
-    /*
-       //IMPRESSÃO PARA DEBUG
-    printf("Nó S: %s\n", s);
-    for(int i=cont;i>=1;i--){
-        imprimirNo(retornaNoHeap(heap, i));
-    }
-
-    */
-
+    //LIBERANDO ESTRUTURAS DE DADOS
     liberaHeap(heap);
-
+    fclose(out);
     fclose(arq);
 
     return 0;
