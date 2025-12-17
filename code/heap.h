@@ -24,4 +24,6 @@ void atualizaHeap(Heap* h, No* no, float dist);
 
 void sort(Heap *h, int tam);
 
+void hsort(Heap *vet, int tam);
+
 #endif
