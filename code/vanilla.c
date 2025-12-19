@@ -75,7 +75,7 @@ int main(int argc, char* argv[]){
 
 
     //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
-    sort(heap, tamanhoMaxHeap(heap)-1);
+    hsort(heap, tamanhoMaxHeap(heap)-1);
 
     //ABERTURA DO ARQUIVO DE SAÍDA
     FILE* out;

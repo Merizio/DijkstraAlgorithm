@@ -123,35 +123,15 @@ void sort(Heap *vet, int tam){
     }
 }
 
-/*void hsort(Heap *vet, int tam){
-    int N = tam;
-    printf("%d\n", N);
-    imprimirNo(vet->array[N]);
-
-    while (N > 1) {
-        No* n = vet->array[1];
-        vet->array[1]=vet->array[N];
-        vet->array[N]=n;
-        fixdown(vet, --N, 1);
-    }
-
-}
-*/
-
 void hsort(Heap *vet, int tam) {
     int N = tam;
-    printf("começando o hsort\n");
-    while (N > 1) {
-        // Troca a raiz (maior) com a última posição do heap atual
+    for (int i = 0; i <= tam; i++)
+        fixup(vet, i); // "Top-down" heap construction.
+    while (N > 1) { // Sort down.
         No* temp = vet->array[1];
         vet->array[1] = vet->array[N];
         vet->array[N] = temp;
 
-        // Reduz o tamanho do heap considerado
-        N--;
-
-        // Restaura a propriedade de heap começando da raiz, 
-        // mas apenas dentro do novo limite N
-        fixdown(vet, N, 1);
+        fixdown(vet, --N, 1);
     }
 }
