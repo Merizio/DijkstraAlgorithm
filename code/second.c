@@ -1,8 +1,5 @@
 #include "funcoes.h"
 
-void troca(No* n1, No* n2);
-int comparar (const void * a1, const void * a2);
-
 int main(int argc, char* argv[]){
     srand(time(NULL));
     int d, cont=1, ns;
@@ -33,47 +30,35 @@ int main(int argc, char* argv[]){
     rewind(arq);
 
     //CRIAR UM VETOR DE VERTICES
-    No** array = malloc(sizeof(No*)*cont);
-    for(int i=0;i<cont;i++){
-        array[i]=criarNo(i);
-    }
+    Array* array = criaArray(cont);
 
     fscanf(arq,"%[^\n~,] ", s);
 
     for(int i=0;i<cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
-        addNomeNo(array[i], node_aux);
-        if(!strcmp(s, node_aux)) {node_s=array[i];ns=i;}
+        addNomeNo(retornaNoArray(array, i), node_aux);
+        if(!strcmp(s, node_aux)) {node_s=retornaNoArray(array, i);ns=i;}
 
         for(int j=0;j<cont;j++){
             if(i==j)    opt=0;
             else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
             else if(opt>0){
-                adicionarConexao(array[i], array[j], opt);
+                adicionarConexao(retornaNoArray(array, i),retornaNoArray(array, j), opt);
             }
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
-    }
-
-    for(int i=0;i<cont;i++){
-        //imprimirNo(array[i]);
     }
 
 
     //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaDistancia(node_s, 0);
-    //troca(array[ns], array[0]);
-    No* aux = array[ns];
-    array[ns]=array[0];
-    array[0]=aux;
-
-    //imprimirNo(array[0]);
+    trocaPosicaoArray(array, ns, 0);
 
     for(int i=0;i<cont;i++){
-        if(i>0) qsort(array+i, cont-i, sizeof(No*), comparar);
+        if(i>0) ordenarArray(array, i);
 
-        No* v_atual=array[i];
+        No* v_atual=retornaNoArray(array, i);
         Cel* v_aux=retornaCel(retornaWarden(v_atual));
         while(1){
             if(v_aux==NULL) break;
@@ -82,8 +67,6 @@ int main(int argc, char* argv[]){
             float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
             if(peso)
                 atualizaDistancia(aux, peso);
-
-            //imprimirNo(aux);
             v_aux=retornaProxCel(v_aux);
         }
     }
@@ -97,7 +80,7 @@ int main(int argc, char* argv[]){
     }
 
     for(int i=0; i<cont;i++){
-        No* no_atual=array[i];
+        No* no_atual=retornaNoArray(array, i);
         fprintf(out, "SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
         if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) fprintf(out, "<- %s ", retornaNomeNo(node_s));
         No* no_pai=retornaPaiNo(no_atual);
@@ -110,28 +93,9 @@ int main(int argc, char* argv[]){
     }
 
 
-    for(int i=0;i<cont;i++){
-        liberarNo(array[i]);
-    }
-    free(array);
+    liberarArray(array);
+    fclose(arq);
+    fclose(out);
 
-
-    return 0;
-}
-
-void troca(No* n1, No* n2){
-    No* aux = n1;
-    n1=n2;
-    n2=aux;
-}
-
-int comparar (const void * a1, const void * a2){
-    No* n1 = *(No**)a1;
-    No* n2 = *(No**)a2;
-
-    float f1 = retornaDistanciaS(n1);
-    float f2 = retornaDistanciaS(n2);
-    if(f1<f2) return -1;
-    else if(f1>f2)return 1;
     return 0;
 }
