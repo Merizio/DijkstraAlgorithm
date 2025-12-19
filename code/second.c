@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
     srand(time(NULL));
-    int d, cont=1;
+    int d, cont=1, ns;
     float opt;
     char s[15], bomba[6], node_aux[15];
     No* node_s;
@@ -29,22 +29,21 @@ int main(int argc, char* argv[]){
     }
     rewind(arq);
 
+    //CRIAR UM VETOR DE VERTICES
+    Array* array = criaArray(cont);
 
-    //CRIAR A HEAP DE VERTICES
-    Heap* heap = criaHeap(cont);
-    
     fscanf(arq,"%[^\n~,] ", s);
 
-    for(int i=1;i<=cont;i++){
+    for(int i=0;i<cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
-        addNomeNo(retornaNoHeap(heap, i), node_aux);
-        if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i);
+        addNomeNo(retornaNoArray(array, i), node_aux);
+        if(!strcmp(s, node_aux)) {node_s=retornaNoArray(array, i);ns=i;}
 
-        for(int j=1;j<=cont;j++){
+        for(int j=0;j<cont;j++){
             if(i==j)    opt=0;
             else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
             else if(opt>0){
-                adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j), opt);
+                adicionarConexao(retornaNoArray(array, i),retornaNoArray(array, j), opt);
             }
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
@@ -53,11 +52,13 @@ int main(int argc, char* argv[]){
 
     //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
-    atualizaHeap(heap, node_s, 0.0);
+    atualizaDistancia(node_s, 0);
+    trocaPosicaoArray(array, ns, 0);
 
-    while(tamanhoHeap(heap)>0){
-        No* v_atual=removeHeap(heap);
-        //imprimirNo(v_atual);
+    for(int i=0;i<cont;i++){
+        if(i>0) ordenarArray(array, i);
+
+        No* v_atual=retornaNoArray(array, i);
         Cel* v_aux=retornaCel(retornaWarden(v_atual));
         while(1){
             if(v_aux==NULL) break;
@@ -65,17 +66,10 @@ int main(int argc, char* argv[]){
 
             float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
             if(peso)
-                atualizaHeap(heap, aux, peso);
-
-            //imprimirNo(aux);
+                atualizaDistancia(aux, peso);
             v_aux=retornaProxCel(v_aux);
         }
-        //printf("\n");
     }
-
-
-    //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
-    sort(heap, tamanhoMaxHeap(heap)-1);
 
     //ABERTURA DO ARQUIVO DE SAÍDA
     FILE* out;
@@ -85,10 +79,8 @@ int main(int argc, char* argv[]){
         exit;
     }
 
-    
-    //IMPRESSÃO
-    for(int i = cont; i>=1;i--){
-        No* no_atual=retornaNoHeap(heap, i);
+    for(int i=0; i<cont;i++){
+        No* no_atual=retornaNoArray(array, i);
         fprintf(out, "SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
         if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) fprintf(out, "<- %s ", retornaNomeNo(node_s));
         No* no_pai=retornaPaiNo(no_atual);
@@ -100,24 +92,10 @@ int main(int argc, char* argv[]){
         fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
     }
 
-    /*//IMPRESSÃO
-    for(int i = cont; i>=1;i--){
-        No* no_atual=retornaNoHeap(heap, i);
-        printf("SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
-        if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) printf("<- %s ", retornaNomeNo(node_s));
-        No* no_pai=retornaPaiNo(no_atual);
-        while(1){
-            if(no_pai==NULL) break;
-            printf("<- %s ", retornaNomeNo(no_pai));
-            no_pai=retornaPaiNo(no_pai);
-        }
-        printf("(Distance: %.2f)\n", retornaDistanciaS(no_atual));
-    }*/
 
-    //LIBERANDO ESTRUTURAS DE DADOS
-    liberaHeap(heap);
-    fclose(out);
+    liberarArray(array);
     fclose(arq);
+    fclose(out);
 
     return 0;
 }
