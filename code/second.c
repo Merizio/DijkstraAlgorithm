@@ -7,6 +7,9 @@ int main(int argc, char* argv[]){
     char s[15], bomba[6], node_aux[15];
     No* node_s;
 
+     //setar variaveis de tempo
+    clock_t start = clock();
+
     //ABERTURA DE ARQUIVO DE ENTRADA
     FILE* arq;
     arq=fopen(argv[1], "r");
@@ -14,6 +17,7 @@ int main(int argc, char* argv[]){
         printf("Erro ao abrir o arquivo\n");
         exit;
     }
+
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
     fscanf(arq,"%[^\n] ", s);
@@ -32,6 +36,7 @@ int main(int argc, char* argv[]){
     //CRIAR UM VETOR DE VERTICES
     Array* array = criaArray(cont);
 
+
     fscanf(arq,"%[^\n~,] ", s);
 
     for(int i=0;i<cont;i++){
@@ -48,7 +53,6 @@ int main(int argc, char* argv[]){
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
     }
-
 
     //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
@@ -71,6 +75,7 @@ int main(int argc, char* argv[]){
         }
     }
 
+
     //ABERTURA DO ARQUIVO DE SAÍDA
     FILE* out;
     out=fopen(argv[2], "w");
@@ -92,6 +97,10 @@ int main(int argc, char* argv[]){
         fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
     }
 
+    //finalizar tempo
+    clock_t end = clock();
+    double seconds=((double)end-start)/CLOCKS_PER_SEC;
+    printf("Utilizando Array: %lf\n", seconds);
 
     liberarArray(array);
     fclose(arq);
