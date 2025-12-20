@@ -42,7 +42,18 @@ static int comparar (const void * a1, const void * a2){
 }
 
 void ordenarArray(Array* x, int lo){
-    qsort(x->array_no+lo, x->n-lo, sizeof(No*), comparar);
+    //qsort(x->array_no+lo, x->n-lo, sizeof(No*), comparar);
+
+    //encontrar o minimo e trocar com o primeiro
+    float min;
+    int pos;
+    for(int i=lo;i<x->n;i++){
+        if(retornaDistanciaS(x->array_no[i])<min || i==lo){
+            min=retornaDistanciaS(x->array_no[i]);
+            pos=i;
+        }
+    }
+    trocaPosicaoArray(x, lo, pos);
 }
 
 void liberarArray(Array* x){

@@ -7,6 +7,10 @@ int main(int argc, char* argv[]){
     char s[15], bomba[6], node_aux[15];
     No* node_s;
 
+     //setar variaveis de tempo
+    clock_t start = clock();
+
+
     //ABERTURA DE ARQUIVO DE ENTRADA
     FILE* arq;
     arq=fopen(argv[1], "r");
@@ -14,6 +18,7 @@ int main(int argc, char* argv[]){
         printf("Erro ao abrir o arquivo\n");
         exit;
     }
+    
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
     fscanf(arq,"%[^\n] ", s);
@@ -66,16 +71,13 @@ int main(int argc, char* argv[]){
             float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
             if(peso)
                 atualizaHeap(heap, aux, peso);
-
-            //imprimirNo(aux);
             v_aux=retornaProxCel(v_aux);
         }
-        //printf("\n");
     }
 
 
     //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
-    hsort(heap, tamanhoMaxHeap(heap)-1);
+    //hsort(heap, tamanhoMaxHeap(heap)-1);
 
     //ABERTURA DO ARQUIVO DE SAÍDA
     FILE* out;
@@ -100,19 +102,11 @@ int main(int argc, char* argv[]){
         fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
     }
 
-    /*//IMPRESSÃO
-    for(int i = cont; i>=1;i--){
-        No* no_atual=retornaNoHeap(heap, i);
-        printf("SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
-        if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) printf("<- %s ", retornaNomeNo(node_s));
-        No* no_pai=retornaPaiNo(no_atual);
-        while(1){
-            if(no_pai==NULL) break;
-            printf("<- %s ", retornaNomeNo(no_pai));
-            no_pai=retornaPaiNo(no_pai);
-        }
-        printf("(Distance: %.2f)\n", retornaDistanciaS(no_atual));
-    }*/
+
+    //finalizar tempo
+    clock_t end = clock();
+    double seconds=((double)end-start)/CLOCKS_PER_SEC;
+    printf("Utilizando Heap: %lf\n", seconds);
 
     //LIBERANDO ESTRUTURAS DE DADOS
     liberaHeap(heap);
