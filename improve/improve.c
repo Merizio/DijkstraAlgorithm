@@ -64,15 +64,14 @@ int main(int argc, char* argv[]){
         No* v_atual=removeHeap(heap);
         Warden* w_atual=retornaWarden(v_atual);
         Cel* v_aux;
+        int j=retornaTamWarden(w_atual);
 
-        for(int i=0;i<=retornaTamWarden(w_atual);i++){
+        for(int i=1;i<=j;i++){
             v_aux=retornaCel(w_atual,i);
-            if(v_aux!=NULL){
-                No* aux = retornaConex(v_aux);
-                float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
-                if(peso)
-                    {atualizaHeap(heap, aux, peso);}
-            }
+            No* aux = retornaConex(v_aux);
+            float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
+            if(peso)
+                {atualizaHeap(heap, aux, peso);}
 
         }
     }

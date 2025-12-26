@@ -18,7 +18,7 @@ struct warden{
 Warden* criarConexao(int sz){
     Warden* w=malloc(sizeof(Warden));
     w->total=sz+1;
-    w->array_conex=calloc(w->total, sizeof(Cel*));
+    w->array_conex=malloc(w->total*sizeof(Cel*));
     w->atual=0;
 
     return w;
