@@ -4,15 +4,17 @@
 typedef struct cel Cel;
 typedef struct warden Warden;
 
-Warden* criarConexao(int sz);
+Warden* criarConexao();
 
-void adicionarElemento(Warden* w, void* conex, int id, float peso);
+void adicionarElemento(Warden* w, void* conex, float peso);
 
 void imprimeWarden(Warden* w);
 
 void liberaWarden(Warden* w);
 
-Cel* retornaCel(Warden* w, int id);
+Cel* retornaCel(Warden* w);
+
+Cel* retornaProxCel(Cel* w);
 
 float retornaDistancia(Cel* c);
 

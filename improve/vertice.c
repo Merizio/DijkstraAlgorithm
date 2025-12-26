@@ -15,13 +15,13 @@ struct no{
     Warden* conex;
 };
 
-No* criarNo(int id){
+No* criarNo(int id, int sz){
     No* n = malloc(sizeof(No));
     n->pai=NULL;
     n->dist_s=INFINITY;
     n->id=id;
     n->nome=NULL;
-    n->conex=criarConexao();
+    n->conex=criarConexao(sz);
     n->finalizado=false;
     return n;
 }
@@ -43,8 +43,8 @@ void liberarNo(No* no){
     free(no);
 }
 
-void adicionarConexao(No* no, void* conex, float peso){
-    adicionarElemento(no->conex, conex, peso);
+void adicionarConexao(No* no, void* conex, int id, float peso){
+    adicionarElemento(no->conex, conex, id, peso);
 }
 
 void atualizaDistancia(No* no, float dist){
@@ -89,7 +89,7 @@ float relaxeNo(No* n1, No* n2, float d_1to2){
         }
     }
 
-    return 0.0;
+    return -1;
 }
 
 Warden* retornaWarden(No* no){

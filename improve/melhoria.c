@@ -2,14 +2,13 @@
 
 int main(int argc, char* argv[]){
     srand(time(NULL));
-    int d, cont=1;
+    int d, cont=1, ns;
     float opt;
     char s[15], bomba[6], node_aux[15];
     No* node_s;
 
      //setar variaveis de tempo
     clock_t start = clock();
-
 
     //ABERTURA DE ARQUIVO DE ENTRADA
     FILE* arq;
@@ -18,7 +17,7 @@ int main(int argc, char* argv[]){
         printf("Erro ao abrir o arquivo\n");
         exit;
     }
-    
+
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
     fscanf(arq,"%[^\n] ", s);
@@ -34,67 +33,48 @@ int main(int argc, char* argv[]){
     }
     rewind(arq);
 
+    //CRIAR UM VETOR DE VERTICES
+    Array* array = criaArray(cont);
 
-    //CRIAR A HEAP DE VERTICES
-    Heap* heap = criaHeap(cont);
-    int* visitados = (int*) calloc(cont + 1, sizeof(int));
-    
+
     fscanf(arq,"%[^\n~,] ", s);
 
-    for(int i=1;i<=cont;i++){
+    for(int i=0;i<cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
-        addNomeNo(retornaNoHeap(heap, i), node_aux);
-        if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i);
+        addNomeNo(retornaNoArray(array, i), node_aux);
+        if(!strcmp(s, node_aux)) {node_s=retornaNoArray(array, i);ns=i;}
 
         for(int j=0;j<cont;j++){
-            if(i==j+1)    opt=0;
+            if(i==j)    opt=0;
             else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
-            if(opt>0){
-                adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j+1), j, opt);
+            else if(opt>0){
+                adicionarConexao(retornaNoArray(array, i),retornaNoArray(array, j), opt);
             }
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
     }
 
-
     //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
-    atualizaHeap(heap, node_s, 0.0);
+    atualizaDistancia(node_s, 0);
+    trocaPosicaoArray(array, ns, 0);
 
-    printf("%d\n", tamanhoHeap(heap));
+    for(int i=0;i<cont;i++){
+        if(i>0) ordenarArray(array, i);
 
-    while(tamanhoHeap(heap)>0){
-        No* v_atual=removeHeap(heap);
-        printf("\n");
-        imprimirNo(v_atual);
-        printf("\n");
-        //Warden* w_atual=retornaWarden(v_atual);
+        No* v_atual=retornaNoArray(array, i);
+        Cel* v_aux=retornaCel(retornaWarden(v_atual));
+        while(1){
+            if(v_aux==NULL) break;
+            No* aux = retornaConex(v_aux);
 
-        int id_v = retornaIdNo(v_atual); // Você vai precisar dessa função ou usar o índice
-        if(visitados[id_v]) continue; 
-        visitados[id_v] = 1;
-
-        for(int i=0;i<cont;i++){
-            Cel* v_aux=retornaCel(retornaWarden(v_atual),i);
-            if(v_aux!=NULL){
-                No* aux = retornaConex(v_aux);
-                imprimirNo(aux);
-                float nova_dist = relaxeNo(v_atual, aux, retornaDistancia(v_aux));
-
-                // Se relaxeNo retornar a nova distância ou um valor negativo se não relaxou:
-                if (nova_dist >= 0) { 
-                    atualizaHeap(heap, aux, nova_dist);
-                }
-            }
-
+            float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
+            if(peso)
+                atualizaDistancia(aux, peso);
+            v_aux=retornaProxCel(v_aux);
         }
-
-
     }
 
-
-    //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
-    //hsort(heap, tamanhoMaxHeap(heap)-1);
 
     //ABERTURA DO ARQUIVO DE SAÍDA
     FILE* out;
@@ -104,10 +84,8 @@ int main(int argc, char* argv[]){
         exit;
     }
 
-    
-    //IMPRESSÃO
-    for(int i = cont; i>=1;i--){
-        No* no_atual=retornaNoHeap(heap, i);
+    for(int i=0; i<cont;i++){
+        No* no_atual=retornaNoArray(array, i);
         fprintf(out, "SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
         if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) fprintf(out, "<- %s ", retornaNomeNo(node_s));
         No* no_pai=retornaPaiNo(no_atual);
@@ -119,17 +97,14 @@ int main(int argc, char* argv[]){
         fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
     }
 
-
     //finalizar tempo
     clock_t end = clock();
     double seconds=((double)end-start)/CLOCKS_PER_SEC;
-    printf("Utilizando Heap: %lf\n", seconds);
+    printf("Utilizando Array: %lf\n", seconds);
 
-    //LIBERANDO ESTRUTURAS DE DADOS
-    liberaHeap(heap);
-    fclose(out);
+    liberarArray(array);
     fclose(arq);
-    free(visitados);
+    fclose(out);
 
     return 0;
 }
