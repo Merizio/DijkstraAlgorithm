@@ -89,7 +89,7 @@ float relaxeNo(No* n1, No* n2, float d_1to2){
         }
     }
 
-    return -1;
+    return 0;
 }
 
 Warden* retornaWarden(No* no){

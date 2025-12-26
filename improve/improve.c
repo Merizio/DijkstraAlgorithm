@@ -37,7 +37,6 @@ int main(int argc, char* argv[]){
 
     //CRIAR A HEAP DE VERTICES
     Heap* heap = criaHeap(cont);
-    int* visitados = (int*) calloc(cont + 1, sizeof(int));
     
     fscanf(arq,"%[^\n~,] ", s);
 
@@ -61,35 +60,21 @@ int main(int argc, char* argv[]){
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaHeap(heap, node_s, 0.0);
 
-    printf("%d\n", tamanhoHeap(heap));
-
     while(tamanhoHeap(heap)>0){
         No* v_atual=removeHeap(heap);
-        printf("\n");
-        imprimirNo(v_atual);
-        printf("\n");
-        //Warden* w_atual=retornaWarden(v_atual);
+        Warden* w_atual=retornaWarden(v_atual);
+        Cel* v_aux;
 
-        int id_v = retornaIdNo(v_atual); // Você vai precisar dessa função ou usar o índice
-        if(visitados[id_v]) continue; 
-        visitados[id_v] = 1;
-
-        for(int i=0;i<cont;i++){
-            Cel* v_aux=retornaCel(retornaWarden(v_atual),i);
+        for(int i=0;i<=retornaTamWarden(w_atual);i++){
+            v_aux=retornaCel(w_atual,i);
             if(v_aux!=NULL){
                 No* aux = retornaConex(v_aux);
-                imprimirNo(aux);
-                float nova_dist = relaxeNo(v_atual, aux, retornaDistancia(v_aux));
-
-                // Se relaxeNo retornar a nova distância ou um valor negativo se não relaxou:
-                if (nova_dist >= 0) { 
-                    atualizaHeap(heap, aux, nova_dist);
-                }
+                float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
+                if(peso)
+                    {atualizaHeap(heap, aux, peso);}
             }
 
         }
-
-
     }
 
 
@@ -129,7 +114,6 @@ int main(int argc, char* argv[]){
     liberaHeap(heap);
     fclose(out);
     fclose(arq);
-    free(visitados);
 
     return 0;
 }

@@ -12,12 +12,14 @@ struct cel{
 struct warden{
     Cel** array_conex;
     int total;
+    int atual;
 };
 
 Warden* criarConexao(int sz){
     Warden* w=malloc(sizeof(Warden));
-    w->array_conex=calloc(sz, sizeof(Cel*));
-    w->total=sz;
+    w->total=sz+1;
+    w->array_conex=calloc(w->total, sizeof(Cel*));
+    w->atual=0;
 
     return w;
 }
@@ -28,7 +30,7 @@ void adicionarElemento(Warden* w, void* conex, int id, float peso){
     c->peso=peso;
     c->id=id;
 
-    w->array_conex[id]=c;
+    w->array_conex[++w->atual]=c;
 }
 
 void imprimeWarden(Warden* w){
@@ -54,6 +56,10 @@ void liberaWarden(Warden* w){
 
 Cel* retornaCel(Warden* w, int id){
     return w->array_conex[id];
+}
+
+int retornaTamWarden(Warden* w){
+    return w->atual;
 }
 
 float retornaDistancia(Cel* c){

@@ -14,6 +14,8 @@ void liberaWarden(Warden* w);
 
 Cel* retornaCel(Warden* w, int id);
 
+int retornaTamWarden(Warden* w);
+
 float retornaDistancia(Cel* c);
 
 void* retornaConex(Cel* c);
