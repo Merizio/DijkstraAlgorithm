@@ -45,11 +45,11 @@ int main(int argc, char* argv[]){
         addNomeNo(retornaNoHeap(heap, i), node_aux);
         if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i);
 
-        for(int j=1;j<=cont;j++){
-            if(i==j)    opt=0;
+        for(int j=0;j<cont;j++){
+            if(i==j+1)    opt=0;
             else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
-            else if(opt>0){
-                adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j), opt);
+            if(opt>0){
+                adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j+1), j, opt);
             }
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
@@ -60,18 +60,19 @@ int main(int argc, char* argv[]){
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaHeap(heap, node_s, 0.0);
 
-    while(!vaziaHeap(heap)){
+    while(tamanhoHeap(heap)>0){
         No* v_atual=removeHeap(heap);
-        //imprimirNo(v_atual);
-        Cel* v_aux=retornaCel(retornaWarden(v_atual));
-        while(1){
-            if(v_aux==NULL) break;
-            No* aux = retornaConex(v_aux);
+        Warden* w_atual=retornaWarden(v_atual);
+        Cel* v_aux;
+        int j=retornaTamWarden(w_atual);
 
+        for(int i=1;i<=j;i++){
+            v_aux=retornaCel(w_atual,i);
+            No* aux = retornaConex(v_aux);
             float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
             if(peso)
-                atualizaHeap(heap, aux, peso);
-            v_aux=retornaProxCel(v_aux);
+                {atualizaHeap(heap, aux, peso);}
+
         }
     }
 

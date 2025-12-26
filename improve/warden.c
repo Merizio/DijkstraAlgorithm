@@ -7,65 +7,59 @@ struct cel{
     void* conex;
     int id;
     float peso;
-    Cel* prox;
 };
 
 struct warden{
-    Cel* prim;
-    Cel* ult;
+    Cel** array_conex;
     int total;
+    int atual;
 };
 
-Warden* criarConexao(){
+Warden* criarConexao(int sz){
     Warden* w=malloc(sizeof(Warden));
-
-    w->prim=w->ult=NULL;
-    w->total=0;
+    w->total=sz+1;
+    w->array_conex=malloc(w->total*sizeof(Cel*));
+    w->atual=0;
 
     return w;
 }
 
-void adicionarElemento(Warden* w, void* conex, float peso){
+void adicionarElemento(Warden* w, void* conex, int id, float peso){
     Cel* c = malloc(sizeof(Cel));
     c->conex=conex;
     c->peso=peso;
-    c->prox=NULL;
-    c->id=w->total;
+    c->id=id;
 
-    if(w->prim==NULL){
-        w->prim=w->ult=c;
-    }
-    else{
-        w->ult->prox=c;
-        w->ult=c;
-    }
-    w->total++;
+    w->array_conex[++w->atual]=c;
 }
 
 void imprimeWarden(Warden* w){
-    Cel* aux = w->prim;
-    while(aux!=NULL){
-        printf("nó %d -> %.2f ", aux->id, aux->peso);
-        aux=aux->prox;
+
+    for(int i=0;i<w->total;i++){
+        if(w->array_conex[i]!=NULL){
+            printf("nó %d -> %.2f ", w->array_conex[i]->id, w->array_conex[i]->peso);
+        }
     }
+    printf("\n");
 }
 
 void liberaWarden(Warden* w){
-    Cel* aux = w->prim;
-    Cel* sec;
-    while(aux!=NULL){
-        sec=aux;
-        aux=aux->prox;
-        free(sec);
+
+    for(int i=0;i<w->total;i++){
+        if(w->array_conex[i]!=NULL){
+           free(w->array_conex[i]);
+        }
     }
+    free(w->array_conex);
     free(w);
 }
 
-Cel* retornaCel(Warden* w){
-    return w->prim;
+Cel* retornaCel(Warden* w, int id){
+    return w->array_conex[id];
 }
-Cel* retornaProxCel(Cel* w){
-    return w->prox;
+
+int retornaTamWarden(Warden* w){
+    return w->atual;
 }
 
 float retornaDistancia(Cel* c){

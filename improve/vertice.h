@@ -4,7 +4,7 @@
 
 typedef struct no No;
 
-No* criarNo(int id);
+No* criarNo(int id, int sz);
 
 void addNomeNo(No* no, char* nome);
 
@@ -12,7 +12,7 @@ void imprimirNo(No* no);
 
 void liberarNo(No* no);
 
-void adicionarConexao(No* no, void* conex, float peso);
+void adicionarConexao(No* no, void* conex, int id, float peso);
 
 void atualizaDistancia(No* no, float dist);
 

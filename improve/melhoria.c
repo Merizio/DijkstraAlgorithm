@@ -58,25 +58,17 @@ int main(int argc, char* argv[]){
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaDistancia(node_s, 0);
     trocaPosicaoArray(array, ns, 0);
-    float menordist=0;
-    int flag;
 
     for(int i=0;i<cont;i++){
-        if(i>0&&flag) ordenarArray(array, i);
+        if(i>0) ordenarArray(array, i);
 
         No* v_atual=retornaNoArray(array, i);
         Cel* v_aux=retornaCel(retornaWarden(v_atual));
-        menordist=retornaDistanciaS(v_atual);
-        flag=0;
-
         while(1){
             if(v_aux==NULL) break;
             No* aux = retornaConex(v_aux);
 
             float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
-            if(peso<menordist) flag=1;
-            //peso = nova distancia
-
             if(peso)
                 atualizaDistancia(aux, peso);
             v_aux=retornaProxCel(v_aux);

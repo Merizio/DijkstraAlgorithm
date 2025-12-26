@@ -17,7 +17,7 @@ Heap* criaHeap(int tam){
 
     h->array[0]=NULL;
     for(int i=1;i<h->n;i++){
-        h->array[i]=criarNo(i);
+        h->array[i]=criarNo(i, tam);
     }
 
     h->atual=h->n-1;
