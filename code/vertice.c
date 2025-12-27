@@ -95,3 +95,11 @@ float relaxeNo(No* n1, No* n2, float d_1to2){
 Warden* retornaWarden(No* no){
     return no->conex;
 }
+
+void finalizarNo(No* no){
+    no->finalizado=true;
+}
+
+bool estadoNo(No* no){
+    return no->finalizado;
+}
