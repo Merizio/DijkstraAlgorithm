@@ -1,6 +1,7 @@
 #ifndef VERTICE_H
 #define VERTICE_H
 #include "warden.h"
+#include <stdbool.h>
 
 typedef struct no No;
 
@@ -31,6 +32,10 @@ char* retornaNomeNo(No* no);
 float relaxeNo(No* n1, No* n2, float d_1to2);
 
 int comparaNo(const void* n1, const void* n2);
+
+void finalizarNo(No* no);
+
+bool estadoNo(No* no);
 
 
 #endif
