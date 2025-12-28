@@ -1,3 +1,10 @@
+/*
+|   TRABALHO PRÁTICO 1 - DIJKSTRA
+|   Francisco Vassoler Merizio - 2024102652
+|   Rodrigo Mattioli - 2019202335
+|   GERAL
+|   vertice.h
+*/
 #ifndef VERTICE_H
 #define VERTICE_H
 #include "warden.h"

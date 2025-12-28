@@ -1,3 +1,10 @@
+/*
+|   TRABALHO PRÁTICO 1 - DIJKSTRA
+|   Francisco Vassoler Merizio - 2024102652
+|   Rodrigo Mattioli - 2019202335
+|   PRIMEIRA E TERCEIRA IMPLEMENTAÇÃO
+|   heap.h
+*/
 #ifndef HEAP_H
 #define HEAP_H
 #include "vertice.h"

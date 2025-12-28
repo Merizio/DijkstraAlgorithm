@@ -1,3 +1,10 @@
+/*
+|   TRABALHO PRÁTICO 1 - DIJKSTRA
+|   Francisco Vassoler Merizio - 2024102652
+|   Rodrigo Mattioli - 2019202335
+|   SEGUNDA IMPLEMENTAÇÃO
+|   array.c
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

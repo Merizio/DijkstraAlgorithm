@@ -1,3 +1,10 @@
+/*
+|   TRABALHO PRÁTICO 1 - DIJKSTRA
+|   Francisco Vassoler Merizio - 2024102652
+|   Rodrigo Mattioli - 2019202335
+|   PRIMEIRA IMPLEMENTAÇÃO
+|   main.c
+*/
 #include "funcoes.h"
 
 int main(int argc, char* argv[]){
