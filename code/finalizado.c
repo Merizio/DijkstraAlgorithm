@@ -8,8 +8,7 @@ int main(int argc, char* argv[]){
     No* node_s;
 
      //setar variaveis de tempo
-    clock_t start = clock();
-
+    //clock_t start = clock();
 
     //ABERTURA DE ARQUIVO DE ENTRADA
     FILE* arq;
@@ -18,7 +17,6 @@ int main(int argc, char* argv[]){
         printf("Erro ao abrir o arquivo\n");
         exit;
     }
-    
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
     fscanf(arq,"%[^\n] ", s);
@@ -33,7 +31,6 @@ int main(int argc, char* argv[]){
         cont++;
     }
     rewind(arq);
-
 
     //CRIAR A HEAP DE VERTICES
     Heap* heap = criaHeap(cont);
@@ -54,7 +51,6 @@ int main(int argc, char* argv[]){
         }
         while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
     }
-
 
     //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
@@ -79,7 +75,6 @@ int main(int argc, char* argv[]){
         }
     }
 
-
     //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
     //hsort(heap, tamanhoMaxHeap(heap)-1);
 
@@ -91,7 +86,6 @@ int main(int argc, char* argv[]){
         exit;
     }
 
-    
     //IMPRESSÃO
     for(int i = cont; i>=1;i--){
         No* no_atual=retornaNoHeap(heap, i);
@@ -106,11 +100,10 @@ int main(int argc, char* argv[]){
         fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
     }
 
-
     //finalizar tempo
-    clock_t end = clock();
-    double seconds=((double)end-start)/CLOCKS_PER_SEC;
-    printf("Utilizando Heap: %lf\n", seconds);
+    //clock_t end = clock();
+    //double seconds=((double)end-start)/CLOCKS_PER_SEC;
+    //printf("Utilizando Heap: %lf\n", seconds);
 
     //LIBERANDO ESTRUTURAS DE DADOS
     liberaHeap(heap);
