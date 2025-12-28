@@ -8,7 +8,7 @@ int main(int argc, char* argv[]){
     No* node_s;
 
      //setar variaveis de tempo
-    clock_t start = clock();
+    //clock_t start = clock();
 
     //ABERTURA DE ARQUIVO DE ENTRADA
     FILE* arq;
@@ -17,7 +17,6 @@ int main(int argc, char* argv[]){
         printf("Erro ao abrir o arquivo\n");
         exit;
     }
-
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
     fscanf(arq,"%[^\n] ", s);
@@ -35,7 +34,6 @@ int main(int argc, char* argv[]){
 
     //CRIAR UM VETOR DE VERTICES
     Array* array = criaArray(cont);
-
 
     fscanf(arq,"%[^\n~,] ", s);
 
@@ -61,7 +59,6 @@ int main(int argc, char* argv[]){
 
     for(int i=0;i<cont;i++){
         if(i>0) ordenarArray(array, i);
-
         No* v_atual=retornaNoArray(array, i);
         Cel* v_aux=retornaCel(retornaWarden(v_atual));
         while(1){
@@ -74,7 +71,6 @@ int main(int argc, char* argv[]){
             v_aux=retornaProxCel(v_aux);
         }
     }
-
 
     //ABERTURA DO ARQUIVO DE SAÍDA
     FILE* out;
@@ -98,9 +94,9 @@ int main(int argc, char* argv[]){
     }
 
     //finalizar tempo
-    clock_t end = clock();
-    double seconds=((double)end-start)/CLOCKS_PER_SEC;
-    printf("Utilizando Array: %lf\n", seconds);
+    //clock_t end = clock();
+    //double seconds=((double)end-start)/CLOCKS_PER_SEC;
+    //printf("Utilizando Array: %lf\n", seconds);
 
     liberarArray(array);
     fclose(arq);

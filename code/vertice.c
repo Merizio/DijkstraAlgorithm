@@ -9,7 +9,7 @@
 struct no{
     int id;
     char* nome;
-    No* pai; //REFERENCIA AO PAI COM O INDICE OU COM NO*
+    No* pai;
     float dist_s;
     bool finalizado;
     Warden* conex;
