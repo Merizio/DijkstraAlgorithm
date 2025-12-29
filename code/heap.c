@@ -1,3 +1,10 @@
+/*
+|   TRABALHO PRÁTICO 1 - DIJKSTRA
+|   Francisco Vassoler Merizio - 2024102652
+|   Rodrigo Mattioli - 2019202335
+|   PRIMEIRA E TERCEIRA IMPLEMENTAÇÃO
+|   heap.c
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,6 +17,7 @@ struct heap{
     int n; //tamanho maximo
 };
 
+//CRIAR UMA HEAP DE TAMANHO tam E COM TODOS OS NÓS INICIALIZADOS
 Heap* criaHeap(int tam){
     Heap* h=malloc(sizeof * h);
     h->n=tam+1;
@@ -25,6 +33,7 @@ Heap* criaHeap(int tam){
     return h;
 }
 
+//FUNÇÕES BÁSICAS DE HEAP DE SUBIR/DESCER NA HEAP
 static void fixup(Heap* h, int pos){
     while(pos>1 && (retornaDistanciaS(h->array[pos/2])>retornaDistanciaS(h->array[pos]))){
         No* aux = h->array[pos/2];
@@ -57,6 +66,7 @@ static void fixdown(Heap* h, int pos, int k){
     }
 }
 
+//ADD ELEMENTO NA HEAP POR BAIXO
 void insereHeap(Heap* h, No* no){
     if(h->atual==h->n){
         printf("Erro! Heap Lotada!\n");
@@ -67,11 +77,12 @@ void insereHeap(Heap* h, No* no){
     fixup(h, h->atual);
 }
 
+//RETORNA NO
 No* retornaNoHeap(Heap* h, int id){
     return h->array[id];
 }
 
-
+//REMOVE O PRIMEIRO ELEMENTO DA HEAP (COLOCA NO FINAL DA ESTRUTURA)
 No* removeHeap(Heap* h){
     No* n = h->array[1];
     h->array[1]=h->array[h->atual];
@@ -84,18 +95,23 @@ No* removeHeap(Heap* h){
     return n;
 }
 
+//SE VAZIO = TRUE
 bool vaziaHeap(Heap* h){
     if(h->atual==0)return true;
     return false;
 }
 
+//RETORNA  O TAMANHO ATUAL DA HEAP
 int tamanhoHeap(Heap* h){
     return h->atual;
 }
+
+//RETORNA O TAMANHO MÁXIMO DA HEAP
 int tamanhoMaxHeap(Heap* h){
     return h->n;
 }
 
+//LIBERA TODA A ESTRUTURA DE HEAP (ATÉ OS "REMOVIDOS")
 void liberaHeap(Heap* h){
     for(int i=0;i<h->n;i++){
         if(h->array[i]!=NULL) liberarNo(h->array[i]);
@@ -104,12 +120,15 @@ void liberaHeap(Heap* h){
     free(h);
 }
 
+//ATUALIZA DISTANCIAS QUE SERÃO MODIFICADAS INTERNAMENTE
 void atualizaHeap(Heap* h, No* no, float dist){
     atualizaDistancia(no, dist);
     fixup(h, retornaIdNo(no));
     //fixdown(h, id);
 }
 
+//FUNÇÕES DE ORDENAÇÃO PARA TESTES
+//INSERTION SORT
 void sort(Heap *vet, int tam){
     for(int i=2;i<tam;i++){
         int j=i;
@@ -122,7 +141,7 @@ void sort(Heap *vet, int tam){
         }       
     }
 }
-
+//HEAPSORT
 void hsort(Heap *vet, int tam) {
     int N = tam;
     for (int i = 0; i <= tam; i++)

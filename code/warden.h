@@ -1,3 +1,10 @@
+/*
+|   TRABALHO PRÁTICO 1 - DIJKSTRA
+|   Francisco Vassoler Merizio - 2024102652
+|   Rodrigo Mattioli - 2019202335
+|   GERAL
+|   warden.h
+*/
 #ifndef CONEX_H
 #define CONEX_H
 
