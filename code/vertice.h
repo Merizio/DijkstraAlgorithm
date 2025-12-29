@@ -44,5 +44,4 @@ void finalizarNo(No* no);
 
 bool estadoNo(No* no);
 
-
 #endif

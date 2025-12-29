@@ -22,5 +22,4 @@ void ordenarArray(Array* x, int lo);
 
 void liberarArray(Array* x);
 
-
 #endif

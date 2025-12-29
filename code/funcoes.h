@@ -4,6 +4,7 @@
 |   Rodrigo Mattioli - 2019202335
 |   GERAL
 |   funcoes.h
+|   TODOS OS INCLUDES PARA SIMPLIFICAR NOS CLIENTES
 */
 #ifndef FUNCOES_H
 #define FUNCOES_H

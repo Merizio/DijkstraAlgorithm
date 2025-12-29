@@ -23,6 +23,7 @@ struct warden{
     int total;
 };
 
+//CRIAR LISTA ENCADEADA DE CONEXÕES
 Warden* criarConexao(){
     Warden* w=malloc(sizeof(Warden));
 
@@ -32,7 +33,9 @@ Warden* criarConexao(){
     return w;
 }
 
+//ADICIONAR UM NÓ NA LISTA DE CONEXÕES
 void adicionarElemento(Warden* w, void* conex, float peso){
+    //CRIAR A CELULA DO NÓ
     Cel* c = malloc(sizeof(Cel));
     c->conex=conex;
     c->peso=peso;
@@ -49,6 +52,7 @@ void adicionarElemento(Warden* w, void* conex, float peso){
     w->total++;
 }
 
+//IMPRIMIR A LISTA DE CONEXÕES (DEBUG)
 void imprimeWarden(Warden* w){
     Cel* aux = w->prim;
     while(aux!=NULL){
@@ -57,6 +61,7 @@ void imprimeWarden(Warden* w){
     }
 }
 
+//LIBERAR A LISTA DE CONEXÕES SEM LIBERAR OS NÓS
 void liberaWarden(Warden* w){
     Cel* aux = w->prim;
     Cel* sec;
@@ -68,17 +73,21 @@ void liberaWarden(Warden* w){
     free(w);
 }
 
+//RETORNA O PRIMEIRO NÓ DA LISTA ENCADEADA
 Cel* retornaCel(Warden* w){
     return w->prim;
 }
+//RETORNA OS PRÓXIMOS NÓS RESPECTIVOS
 Cel* retornaProxCel(Cel* w){
     return w->prox;
 }
 
+//RETORNA A DISTANCIA DE UM NÓ A PARA UM NÓ B
 float retornaDistancia(Cel* c){
     return c->peso;
 }
 
+//RETORNA O NÓ CONTIDO NA CÉLULA
 void* retornaConex(Cel* c){
     if(c==NULL)return NULL;
     return c->conex;

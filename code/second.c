@@ -11,7 +11,7 @@ int main(int argc, char* argv[]){
     srand(time(NULL));
     int d, cont=1, ns;
     float opt;
-    char s[15], bomba[6], node_aux[15];
+    char s[20], bomba[10], node_aux[20];
     No* node_s;
 
      //setar variaveis de tempo
@@ -41,9 +41,9 @@ int main(int argc, char* argv[]){
 
     //CRIAR UM VETOR DE VERTICES
     Array* array = criaArray(cont);
-
     fscanf(arq,"%[^\n~,] ", s);
 
+    //LEITURA DA ENTRADA
     for(int i=0;i<cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
         addNomeNo(retornaNoArray(array, i), node_aux);
@@ -51,23 +51,24 @@ int main(int argc, char* argv[]){
 
         for(int j=0;j<cont;j++){
             if(i==j)    opt=0;
-            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
+            //TRATAMENTO DE BOMBAS: NÃO EXISTE LIGAÇÃO
+            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba);
             else if(opt>0){
                 adicionarConexao(retornaNoArray(array, i),retornaNoArray(array, j), opt);
             }
         }
-        while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
+        while((d=fgetc(arq))!='\n' && d!=EOF);//CONTINUAR ATÉ FIM DO ARQUIVO
     }
 
-    //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaDistancia(node_s, 0);
     trocaPosicaoArray(array, ns, 0);
 
+    //FAZER O ALGORITMO DE DIJKSTRA
     for(int i=0;i<cont;i++){
-        if(i>0) ordenarArray(array, i);
-        No* v_atual=retornaNoArray(array, i);
-        Cel* v_aux=retornaCel(retornaWarden(v_atual));
+        if(i>0) ordenarArray(array, i);//ENCONTRA O MINIMO
+        No* v_atual=retornaNoArray(array, i);//EXTRAI O MINIMO
+        Cel* v_aux=retornaCel(retornaWarden(v_atual));//LISTA DE CONEXÕES
         while(1){
             if(v_aux==NULL) break;
             No* aux = retornaConex(v_aux);

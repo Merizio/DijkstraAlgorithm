@@ -11,7 +11,7 @@ int main(int argc, char* argv[]){
     srand(time(NULL));
     int d, cont=1;
     float opt;
-    char s[15], bomba[6], node_aux[15];
+    char s[20], bomba[10], node_aux[20];
     No* node_s;
 
      //setar variaveis de tempo
@@ -41,39 +41,40 @@ int main(int argc, char* argv[]){
 
     //CRIAR A HEAP DE VERTICES
     Heap* heap = criaHeap(cont);
-    
-    fscanf(arq,"%[^\n~,] ", s);
+    fscanf(arq,"%[^\n~,] ", s);//NOME DO NODE_S
 
+    //LEITURA DA ENTRADA
     for(int i=1;i<=cont;i++){
         fscanf(arq,"%[^\n~,] ", node_aux);
         addNomeNo(retornaNoHeap(heap, i), node_aux);
-        if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i);
+        if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i); //SET NODE_S
 
         for(int j=1;j<=cont;j++){
             if(i==j)    opt=0;
-            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
+            //TRATAMENTO DE BOMBAS: NÃO EXISTE LIGAÇÃO
+            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba);
             else if(opt>0){
                 adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j), opt);
             }
         }
-        while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
+        while((d=fgetc(arq))!='\n' && d!=EOF);//CONTINUAR ATÉ FIM DO ARQUIVO
     }
 
-    //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaHeap(heap, node_s, 0.0);
 
+    //FAZER O ALGORITMO DE DIJKSTRA
     while(tamanhoHeap(heap)>0){
-        No* v_atual=removeHeap(heap);
-        //imprimirNo(v_atual);
-        Cel* v_aux=retornaCel(retornaWarden(v_atual));
+        No* v_atual=removeHeap(heap); //EXTRAI MINIMO
+        Cel* v_aux=retornaCel(retornaWarden(v_atual));//LISTA DE CONEXÕES
         while(1){
             if(v_aux==NULL) break;
             No* aux = retornaConex(v_aux);
-
+            
             float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
             if(peso)
                 atualizaHeap(heap, aux, peso);
+
             v_aux=retornaProxCel(v_aux);
         }
     }
