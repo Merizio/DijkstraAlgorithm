@@ -1,116 +1,136 @@
 #include "funcoes.h"
+#include <ctype.h>
+
+
+// FUNÇÃO PARA ORDENAÇÃO LEXICOGRÁFICA
+int compararParaImpressao(const void* a, const void* b) {
+    No* noA = *(No**)a;
+    No* noB = *(No**)b;
+    float distA = retornaDistanciaS(noA);
+    float distB = retornaDistanciaS(noB);
+    if (distA < distB) return -1;
+    if (distA > distB) return 1;
+    return strcmp(retornaNomeNo(noA), retornaNomeNo(noB));
+}
 
 int main(int argc, char* argv[]){
-    srand(time(NULL));
-    int d, cont=1;
-    float opt;
-    char s[15], bomba[6], node_aux[15];
-    No* node_s;
+    if(argc < 3){
+        printf("Uso: %s <entrada> <saida>\n", argv[0]);
+        return 1;
+    }
 
-     //setar variaveis de tempo
+    srand(time(NULL));
+    int cont = 0;
+    char s[256], node_aux[256];
+    No* node_s = NULL;
+    char buffer[65536]; //buffer de 64K para ler linha por linha
+
+    //setar variaveis de tempo
     clock_t start = clock();
 
+    FILE* arq = fopen(argv[1], "r");
+    if(arq == NULL){
+        printf("Erro ao abrir o arquivo\n");
+        exit(1);
+    }
 
     //ABERTURA DE ARQUIVO DE ENTRADA
-    FILE* arq;
-    arq=fopen(argv[1], "r");
-    if(arq==NULL){
-        printf("Erro ao abrir o arquivo\n");
-        exit;
+    if(fgets(buffer, sizeof(buffer), arq) == NULL) exit(1);
+    sscanf(buffer, "%s", s);
+    long pos_dados = ftell(arq);
+    while(fgets(buffer, sizeof(buffer), arq) != NULL) {
+        char temp[256];
+        if(sscanf(buffer, "%s", temp) == 1) cont++;
     }
-    
+    fseek(arq, pos_dados, SEEK_SET);
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
-    fscanf(arq,"%[^\n] ", s);
-    fscanf(arq,"%[^\n~,] ", node_aux);
-    while(1){
-        while(fscanf(arq,", %f", &opt)==1){
-            cont++;
-        }
-        //CONTROLE PARA BOMBA
-        fscanf(arq,"%[^,]", bomba);
-        if(strcmp(bomba, "bomba")!=0) break;
-        cont++;
-    }
-    rewind(arq);
-
-
-    //CRIAR A HEAP DE VERTICES
     Heap* heap = criaHeap(cont);
-    
-    fscanf(arq,"%[^\n~,] ", s);
+    for(int i = 1; i <= cont; i++){
+        if(fgets(buffer, sizeof(buffer), arq) == NULL) break;
+        char* virgula = strchr(buffer, ',');
+        if(virgula == NULL) {
+             sscanf(buffer, "%s", node_aux);
+        } else {
+            *virgula = '\0';
+            strcpy(node_aux, buffer);
+            *virgula = ','; 
+        }
+        
+        No* no_atual = retornaNoHeap(heap, i);
+        addNomeNo(no_atual, node_aux);
 
-    for(int i=1;i<=cont;i++){
-        fscanf(arq,"%[^\n~,] ", node_aux);
-        addNomeNo(retornaNoHeap(heap, i), node_aux);
-        if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i);
+        if(strcmp(s, node_aux) == 0) {
+            node_s = no_atual;
+        }
 
-        for(int j=1;j<=cont;j++){
-            if(i==j)    opt=0;
-            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba); //CONTROLE DE BOMBAS
-            else if(opt>0){
-                adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j), opt);
+        //CRIAR A HEAP DE VERTICES
+        char* ptr = virgula ? virgula + 1 : buffer; 
+        for(int j = 1; j <= cont; j++){
+            while(*ptr && !isdigit(*ptr) && *ptr != '-' && *ptr != '.') ptr++;
+            if(!*ptr) break;   
+            float peso = strtof(ptr, &ptr);        
+            if(peso > 0 && i != j){
+                adicionarConexao(no_atual, retornaNoHeap(heap, j), peso);
             }
         }
-        while((d=fgetc(arq))!='\n' && d!=EOF);          //CONTINUAR ATÉ FIM DO ARQUIVO
     }
-
-
+    if(node_s == NULL){
+        printf("Erro: No de origem '%s' nao encontrado.\n", s);
+        liberaHeap(heap);
+        fclose(arq);
+        exit(1);
+    }
     //FAZER O ALGORITMO DE DIJKSTRA
     //DISTANCIA DO NODE_S SETADA EM 0
     atualizaHeap(heap, node_s, 0.0);
-
-    while(tamanhoHeap(heap)>0){
-        No* v_atual=removeHeap(heap);
-        //imprimirNo(v_atual);
-        Cel* v_aux=retornaCel(retornaWarden(v_atual));
-        while(1){
-            if(v_aux==NULL) break;
-            No* aux = retornaConex(v_aux);
-
-            float peso=relaxeNo(v_atual, aux, retornaDistancia(v_aux));
-            if(peso)
-                atualizaHeap(heap, aux, peso);
-            v_aux=retornaProxCel(v_aux);
+    while(tamanhoHeap(heap) > 0){
+        No* v_atual = removeHeap(heap);
+        //SE HOUVER DISTANCIAS MUITO GRANDES, IGNORAR ELAS E CONTINUAR    
+        if(retornaDistanciaS(v_atual) == INFINITY) continue;
+        Cel* v_aux = retornaCel(retornaWarden(v_atual));
+        while(v_aux != NULL){
+            No* vizinho = retornaConex(v_aux);
+            float peso = retornaDistancia(v_aux);
+            float novo_peso = relaxeNo(v_atual, vizinho, peso);
+            if(novo_peso > 0)
+                atualizaHeap(heap, vizinho, novo_peso);
+            v_aux = retornaProxCel(v_aux);
         }
     }
 
-
-    //ARRUMAR OS CAMINHOS EM ORDEM DE PESO
-    //hsort(heap, tamanhoMaxHeap(heap)-1);
-
-    //ABERTURA DO ARQUIVO DE SAÍDA
-    FILE* out;
-    out=fopen(argv[2], "w");
-    if(out==NULL){
-        printf("Erro ao abrir o arquivo\n");
-        exit;
+    No** vetor_saida = malloc(sizeof(No*) * cont);
+    for(int i=0; i<cont; i++) {
+        vetor_saida[i] = retornaNoHeap(heap, i+1);
     }
-
-    
-    //IMPRESSÃO
-    for(int i = cont; i>=1;i--){
-        No* no_atual=retornaNoHeap(heap, i);
-        fprintf(out, "SHORTEST PATH TO %s: %s ", retornaNomeNo(no_atual), retornaNomeNo(no_atual));
-        if(!strcmp(retornaNomeNo(no_atual), retornaNomeNo(node_s))) fprintf(out, "<- %s ", retornaNomeNo(node_s));
-        No* no_pai=retornaPaiNo(no_atual);
-        while(1){
-            if(no_pai==NULL) break;
-            fprintf(out, "<- %s ", retornaNomeNo(no_pai));
-            no_pai=retornaPaiNo(no_pai);
+    //ARRUMAR OS CAMINHOS EM ORDEM LEXICOGRÁFICA 
+    qsort(vetor_saida, cont, sizeof(No*), compararParaImpressao);
+   
+    // SAIDA DO ARQUIVO
+    FILE* out = fopen(argv[2], "w");
+    if(out){
+        for(int i=0; i<cont; i++){
+            No* at = vetor_saida[i];
+            fprintf(out, "SHORTEST PATH TO %s: %s ", retornaNomeNo(at), retornaNomeNo(at));
+            if(strcmp(retornaNomeNo(at), s) != 0){
+                No* p = retornaPaiNo(at);
+                while(p){
+                    fprintf(out, "<- %s ", retornaNomeNo(p));
+                    if(strcmp(retornaNomeNo(p), s) == 0) break;
+                    p = retornaPaiNo(p);
+                }
+            }
+            fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(at));
         }
-        fprintf(out, "(Distance: %.2f)\n", retornaDistanciaS(no_atual));
+        fclose(out);
     }
-
-
     //finalizar tempo
-    clock_t end = clock();
-    double seconds=((double)end-start)/CLOCKS_PER_SEC;
+    clock_t end_time = clock();
+    double seconds = ((double)end_time - start) / CLOCKS_PER_SEC;
     printf("Utilizando Heap: %lf\n", seconds);
-
     //LIBERANDO ESTRUTURAS DE DADOS
+    free(vetor_saida);
     liberaHeap(heap);
-    fclose(out);
     fclose(arq);
 
     return 0;

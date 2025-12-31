@@ -1,0 +1,8 @@
+rascunho:
+	gcc -o trab1 rascunho.c vertice.c warden.c heap.c -lm
+
+vanilla:
+	gcc -o trab1 vanilla.c vertice.c warden.c heap.c -lm
+	
+basicvec:
+	gcc -o trab1 second.c vertice.c warden.c array.c -lm
