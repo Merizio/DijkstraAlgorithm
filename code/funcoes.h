@@ -19,5 +19,6 @@
 #include "heap.h"
 #include "array.h"
 #include <time.h>
+#include <ctype.h>
 
 #endif

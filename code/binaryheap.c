@@ -8,10 +8,15 @@
 #include "funcoes.h"
 
 int main(int argc, char* argv[]){
+    if(argc < 3){
+        printf("Uso: %s <entrada> <saida>\n", argv[0]);
+        return 1;
+    }
+    
     srand(time(NULL));
     int d, cont=1;
     float opt;
-    char s[20], bomba[10], node_aux[20];
+    char s[50], bomba[50], node_aux[50];
     No* node_s;
 
      //setar variaveis de tempo
@@ -26,14 +31,14 @@ int main(int argc, char* argv[]){
     }
 
     //TESTE PARA ENCONTRAR O NUMERO DE NOS
-    fscanf(arq,"%[^\n] ", s);
-    fscanf(arq,"%[^\n~,] ", node_aux);
+    fscanf(arq," %49[^,\n]", s);
+    fscanf(arq," %49[^,\n]", node_aux);
     while(1){
         while(fscanf(arq,", %f", &opt)==1){
             cont++;
         }
         //CONTROLE PARA BOMBA
-        fscanf(arq,"%[^,]", bomba);
+        fscanf(arq," %49[^,\n]", bomba);
         if(strcmp(bomba, "bomba")!=0) break;
         cont++;
     }
@@ -41,18 +46,18 @@ int main(int argc, char* argv[]){
 
     //CRIAR A HEAP DE VERTICES
     Heap* heap = criaHeap(cont);
-    fscanf(arq,"%[^\n~,] ", s);//NOME DO NODE_S
+    fscanf(arq," %49[^,\n]", s);//NOME DO NODE_S
 
     //LEITURA DA ENTRADA
     for(int i=1;i<=cont;i++){
-        fscanf(arq,"%[^\n~,] ", node_aux);
+        fscanf(arq," %49[^,\n]", node_aux);
         addNomeNo(retornaNoHeap(heap, i), node_aux);
         if(!strcmp(s, node_aux)) node_s=retornaNoHeap(heap, i); //SET NODE_S
 
         for(int j=1;j<=cont;j++){
             if(i==j)    opt=0;
             //TRATAMENTO DE BOMBAS: NÃO EXISTE LIGAÇÃO
-            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq,"%[^,~\n]", bomba);
+            else if(fscanf(arq,", %f", &opt)!=1) fscanf(arq," %49[^,\n]", bomba);
             else if(opt>0){
                 adicionarConexao(retornaNoHeap(heap, i), retornaNoHeap(heap, j), opt);
             }

@@ -43,8 +43,8 @@ void addNomeNo(No* no, char* nome){
 void imprimirNo(No* no){
     printf("%d: %s\tDist para S:%.2f\n", no->id, no->nome, no->dist_s);
     //printf("%s ", no->nome);
-    //imprimeWarden(no->conex);
-    //printf("\n");
+    imprimeWarden(no->conex);
+    printf("\n");
 }
 
 //LIBERA A ESTRUTURA E AS SUAS CONEXÕES

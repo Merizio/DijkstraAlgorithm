@@ -127,10 +127,23 @@ void atualizaHeap(Heap* h, No* no, float dist){
     //fixdown(h, id);
 }
 
+// FUNÇÃO PARA ORDENAÇÃO LEXICOGRÁFICA
+static int compararParaImpressao(const void* a, const void* b) {
+    No* noA = *(No**)a;
+    No* noB = *(No**)b;
+    float distA = retornaDistanciaS(noA);
+    float distB = retornaDistanciaS(noB);
+    if (distA < distB) return -1;
+    if (distA > distB) return 1;
+    return strcmp(retornaNomeNo(noA), retornaNomeNo(noB));
+}
+
 //FUNÇÕES DE ORDENAÇÃO PARA TESTES
 //INSERTION SORT
 void sort(Heap *vet, int tam){
-    for(int i=2;i<tam;i++){
+    qsort(vet->array+1, tam, sizeof(No*), compararParaImpressao);
+    
+    /*for(int i=2;i<tam;i++){
         int j=i;
         while (j>=2){
             if(retornaDistanciaS(vet->array[j]) < retornaDistanciaS(vet->array[j-1])) break;
@@ -139,7 +152,7 @@ void sort(Heap *vet, int tam){
             vet->array[j-1]=n;
             j--;
         }       
-    }
+    }*/
 }
 //HEAPSORT
 void hsort(Heap *vet, int tam) {
